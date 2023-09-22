@@ -6,10 +6,9 @@
 //
 
 import SwiftUI
-
 struct LoginView: View {
     @EnvironmentObject var appState: AppState
-
+    
     @ObservedObject var viewModel: LoginViewModel = LoginViewModel()
     
     @State var show = false
@@ -56,8 +55,7 @@ struct LoginView: View {
                     .accessibilityIdentifier("loginButton")
                     .alert(isPresented: $viewModel.showError) {
                         Alert(title: Text(viewModel.errorMessage), message: Text(viewModel.errorMessage), dismissButton: .default(Text("OK")))
-                                }
-
+                    }
                 }
                 .padding(.horizontal, 20)
                 Spacer()
@@ -65,9 +63,7 @@ struct LoginView: View {
                     Text("User ID: \(loginResponse.id)")
                     Text("Token: \(loginResponse.token)")
                 }
-               
             }
-
         }
         .onAppear{
             viewModel.setUp(appState: appState)

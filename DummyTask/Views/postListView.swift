@@ -12,7 +12,6 @@ struct PostListView: View {
     @StateObject  var postVM = PostViewModel()
     @EnvironmentObject private var appState: AppState
 
-    
     var body: some View {
         VStack{
             if postVM.showSearch {
@@ -97,7 +96,6 @@ struct PostListView: View {
                                 Text("2 hours ago")
                                     .font(.caption)
                                     .foregroundColor(.gray)
-
                             }
                             Spacer()
                         }
@@ -109,7 +107,6 @@ struct PostListView: View {
                         Image("postimage")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                        
                         Divider()
                     }
                     .onAppear {
@@ -120,10 +117,8 @@ struct PostListView: View {
                 }
                 .padding(0)
             }
-            .padding(0)
             .listStyle(PlainListStyle())
             .padding(0)
-
             .onAppear {
                 postVM.fetchPosts()
                 postVM.setUp(appState: appState)

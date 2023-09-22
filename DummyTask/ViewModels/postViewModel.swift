@@ -37,7 +37,7 @@ class PostViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-    func fetchPosts(reset: Bool = false,startSearch:Bool = false) {
+    func fetchPosts(reset: Bool = false, startSearch: Bool = false) {
         
         var param = ["limit":"10","skip":"\(currentPage)"]
         var endPoint = EndPoint.posts
@@ -86,11 +86,12 @@ class PostViewModel: ObservableObject {
             fetchPosts()
         }
     }
-    func setUp(appState:AppState)  {
+    
+    func setUp(appState: AppState)  {
         self.appState = appState
     }
     
-    func logout()  {
+    func logout() {
         appState?.removeSession()
     }
 }

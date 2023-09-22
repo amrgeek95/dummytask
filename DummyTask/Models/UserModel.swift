@@ -7,9 +7,6 @@
 
 import Foundation
 
-struct LoginResponse  :Codable{
-    var userModel : UserModel
-}
 struct UserModel: Codable {
     let id: Int
     let username: String

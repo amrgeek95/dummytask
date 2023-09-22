@@ -9,12 +9,15 @@ import SwiftUI
 import Combine
 
 class AppState: ObservableObject {
+    
     @AppStorage("userData") var userData = Data()
+    
     @Published var isLoggedIn:Bool = false {
         didSet {
             @AppStorage("isLoggedIn") var logged = isLoggedIn
         }
     }
+    
     @Published var userInfo:UserModel? {
         didSet {
             @AppStorage("userData") var appUserData = Data()
@@ -22,7 +25,6 @@ class AppState: ObservableObject {
                 userData = appData
             }
         }
-        
     }
     
     init() {
@@ -34,20 +36,18 @@ class AppState: ObservableObject {
             self.isLoggedIn = false
         }
     }
+    
     func removeSession(){
         self.isLoggedIn = false
         UserDefaults.standard.removeObject(forKey: "isLoggedIn")
         UserDefaults.standard.removeObject(forKey: "userData")
     }
-    
-    
 }
-
 
 class LoginViewModel: ObservableObject {
     
     var appState :AppState?
-
+    
     @Published var loginResponse: UserModel?
     @Published var showError = false
     @Published var errorMessage = ""
@@ -55,10 +55,10 @@ class LoginViewModel: ObservableObject {
     @Published var username: String = ""
     @Published var password: String = ""
     @Published var isLoading: Bool = false
-
+    
     private let apiManager = APIManager()
     private var cancellables = Set<AnyCancellable>()
-
+    
     func setUp(appState:AppState){
         self.appState = appState
     }
@@ -79,7 +79,7 @@ class LoginViewModel: ObservableObject {
             "username": username,
             "password": password
         ]
-
+        
         apiManager.request(endpoint: EndPoint.login.rawValue, httpMethod: .POST, parameters: parameters)
             .sink { completion in
                 self.isLoading = false
@@ -104,12 +104,12 @@ class LoginViewModel: ObservableObject {
                 }else{
                     self.showError = true
                     self.errorMessage = "Invalid username or passwrod"
-
+                    
                 }
                 
             }
             .store(in: &cancellables)
-        
     }
+    
 }
 
