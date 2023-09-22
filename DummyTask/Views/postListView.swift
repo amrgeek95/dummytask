@@ -19,15 +19,7 @@ struct PostListView: View {
                     Button {
                         postVM.showSearch.toggle()
                         postVM.searchText = ""
-                        if postVM.posts.isEmpty {
-                            postVM.fetchPosts()
-                        }else{
-                            if let lastPost = postVM.posts.last {
-                                postVM.loadMorePosts(currentItem:  lastPost )
-                            }else{
-                                postVM.fetchPosts()
-                            }
-                        }
+                        postVM.fetchPosts()
                     } label: {
                         Image(systemName: "x.circle")
                             .foregroundColor(.black.opacity(0.4))
@@ -107,7 +99,6 @@ struct PostListView: View {
                         Image("postimage")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                        Divider()
                     }
                     .onAppear {
                         if post.id == postVM.lastIdFetched {
