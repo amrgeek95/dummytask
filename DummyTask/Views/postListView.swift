@@ -14,6 +14,32 @@ struct PostListView: View {
 
     var body: some View {
         VStack{
+            searchView
+            Spacer()
+            if postVM.isLoading  {
+                ProgressView()
+                    .padding()
+            }
+            Divider()
+            listView
+            .padding(0)
+            .onAppear {
+                postVM.fetchPosts()
+                postVM.setUp(appState: appState)
+            }
+        }
+    }
+}
+
+struct PostListView_Previews: PreviewProvider {
+    static var previews: some View {
+        PostListView()
+    }
+}
+
+private extension PostListView {
+    var searchView : some View {
+        VStack {
             if postVM.showSearch {
                 HStack {
                     Button {
@@ -68,59 +94,46 @@ struct PostListView: View {
                 .padding()
                 
             }
-            Spacer()
-            if postVM.isLoading  {
-                ProgressView()
-                    .padding()
-            }
-            Divider()
-            List {
-                ForEach(postVM.posts, id: \.id) { post in
-                    VStack(alignment: .leading) {
-                        HStack{
-                            Image("userimage")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 40,height: 40)
-                            VStack(alignment: .leading){
-                                Text("Ahmed")
-                                    .font(.title3)
-                                Text("2 hours ago")
-                                    .font(.caption)
-                                    .foregroundColor(.gray)
-                            }
-                            Spacer()
-                        }
-                        Text(post.title)
-                            .font(.headline)
-                        Text(post.body)
-                            .font(.subheadline)
-                        
-                        Image("postimage")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    }
-                    .onAppear {
-                        if post.id == postVM.lastIdFetched {
-                            postVM.loadMorePosts(currentItem: post)
-                        }
-                    }
-                }
-                .padding(0)
-            }
-            .listStyle(PlainListStyle())
-            .padding(0)
-            .onAppear {
-                postVM.fetchPosts()
-                postVM.setUp(appState: appState)
-            }
         }
     }
 }
 
-struct PostListView_Previews: PreviewProvider {
-    static var previews: some View {
-        PostListView()
+private extension PostListView {
+    var listView : some View {
+        List {
+            ForEach(postVM.posts, id: \.id) { post in
+                VStack(alignment: .leading) {
+                    HStack{
+                        Image("userimage")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 40,height: 40)
+                        VStack(alignment: .leading){
+                            Text("Ahmed")
+                                .font(.title3)
+                            Text("2 hours ago")
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                        }
+                        Spacer()
+                    }
+                    Text(post.title)
+                        .font(.headline)
+                    Text(post.body)
+                        .font(.subheadline)
+                    
+                    Image("postimage")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                }
+                .onAppear {
+                    if post.id == postVM.lastIdFetched {
+                        postVM.loadMorePosts(currentItem: post)
+                    }
+                }
+            }
+            .padding(0)
+        }
+        .listStyle(PlainListStyle())
     }
 }
-
